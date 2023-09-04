@@ -2,15 +2,39 @@ package render
 
 import (
 	"bytes"
+	"hello-world/pkg/config"
+	"hello-world/pkg/models"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 )
 
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+var app = config.AppConfig{}
+
+// NewTemplate dsf
+func NewTemplate(a *config.AppConfig) {
+	//app = a
+}
+
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	return td
+}
+
+// RenderTemplate 랜더링 템플릿
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+
+	var tc map[string]*template.Template
+	var err error
+
+	if app.UseCache {
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
+	}
+
 	//Step1 : create a template cache
-	tc, err := CreateTemplateCache()
+	//tc, err := CreateTemplateCache()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,10 +42,15 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	//Step2 : get request from cache
 	t, ok := tc[tmpl]
 	if !ok {
+		log.Fatal("쿠드 낫 겟 쳄플릿 프롬 템캐시")
 		log.Fatal(err)
 	}
+
 	buf := new(bytes.Buffer)
+	td = AddDefaultData(td)
 	err = t.Execute(buf, nil)
+	_ = t.Execute(buf, td)
+
 	if err != nil {
 		log.Println(err)
 	}
@@ -40,7 +69,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-// CreateTemplateCache is 캐싱
+// CreateTemplateCache is 캐함
 func CreateTemplateCache() (map[string]*template.Template, error) {
 	//myCache := make(map[string]*template.Template)
 	myCache := map[string]*template.Template{}
