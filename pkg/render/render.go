@@ -9,12 +9,13 @@ import (
 )
 
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	//create a template cache
+	//Step1 : create a template cache
 	tc, err := createTemplateCache()
 	if err != nil {
 		log.Fatal(err)
 	}
-	//get request from cache
+
+	//Step2 : get request from cache
 	t, ok := tc[tmpl]
 	if !ok {
 		log.Fatal(err)
@@ -25,7 +26,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 		log.Println(err)
 	}
 
-	//render the tmpl
+	//Step3 : render the tmpl
 	_, err = buf.WriteTo(w)
 	if err != nil {
 		log.Println(err)
@@ -59,6 +60,8 @@ func createTemplateCache() (map[string]*template.Template, error) {
 		}
 
 		if len(matches) > 0 {
+			// @todo Glob >> 아 HTML 경로와 이름 가지고
+			// 에러가 좀 국한적이다 문제가 있다 >>
 			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
 			if err != nil {
 				return myCache, err
