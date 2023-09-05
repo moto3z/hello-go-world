@@ -7,14 +7,14 @@ import (
 	"net/http"
 )
 
-// Repo the repositroy used by handers
+// Repo the repository used by the handlers
 var Repo *Repository
 
 type Repository struct {
 	App *config.AppConfig
 }
 
-// NewRepo 리포
+// NewRepo 새로운 리포지토리 생성
 func NewRepo(a *config.AppConfig) *Repository {
 	return &Repository{
 		App: a,
@@ -24,7 +24,6 @@ func NewRepo(a *config.AppConfig) *Repository {
 // NewHandler sets the Repos for the handlers
 func NewHandler(r *Repository) {
 	Repo = r
-
 }
 
 //td *models.TemplateData
@@ -38,6 +37,5 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["test"] = "hello world!"
-
 	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{})
 }
