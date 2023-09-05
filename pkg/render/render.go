@@ -2,6 +2,7 @@ package render
 
 import (
 	"bytes"
+	"fmt"
 	"hello-world/pkg/config"
 	"hello-world/pkg/models"
 	"html/template"
@@ -9,6 +10,8 @@ import (
 	"net/http"
 	"path/filepath"
 )
+
+var functions = template.FuncMap{}
 
 var app = &config.AppConfig{}
 
@@ -42,8 +45,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 	//Step2 : get request from cache
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal("쿠드 낫 겟 쳄플릿 프롬 템캐시")
-		log.Fatal(err)
+		fmt.Println(err)
+		log.Fatal("Could not get template from template cache")
 	}
 
 	buf := new(bytes.Buffer)
@@ -58,11 +61,12 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 	//Step3 : render the tmpl
 	_, err = buf.WriteTo(w)
 	if err != nil {
-		log.Println(err)
+		fmt.Println("error writing template to browser", err)
 	}
+}
 
-	//before code
-	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl, "./templates/base.layout.tmpl")
+func 과거의코드(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+	parsedTemplate, err := template.ParseFiles("./templates/"+tmpl, "./templates/base.layout.tmpl")
 	err = parsedTemplate.Execute(w, nil)
 	if err != nil {
 		print("error")
