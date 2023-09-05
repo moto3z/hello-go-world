@@ -10,18 +10,19 @@ import (
 	"path/filepath"
 )
 
-var app = config.AppConfig{}
+var app = &config.AppConfig{}
 
-// NewTemplate dsf
+// NewTemplate sets the config for the template package
 func NewTemplate(a *config.AppConfig) {
-	//app = a
+	app = a
 }
 
+// AddDefaultData 모름
 func AddDefaultData(td *models.TemplateData) *models.TemplateData {
 	return td
 }
 
-// RenderTemplate 랜더링 템플릿
+// RenderTemplate renders templates using html/template
 func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 
 	var tc map[string]*template.Template

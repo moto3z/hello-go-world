@@ -22,7 +22,7 @@ func main() {
 	// 1구간 ==========================
 	app.TemplateCache = tc
 	app.UseCache = false
-	render.NewTemplate(&app)
+	render.NewTemplate(&app) //앱컨피그에 접근할 수 있도록
 	//& 레퍼런스
 	// * 포인터
 

@@ -27,15 +27,17 @@ func NewHandler(r *Repository) {
 
 }
 
+//td *models.TemplateData
+
 // Home page
-func (m *Repository) Home(w http.ResponseWriter, r *http.Request, td *models.TemplateData) {
-	render.RenderTemplate(w, "home.page.tmpl", td)
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
 }
 
 // About page
-func (m *Repository) About(w http.ResponseWriter, r *http.Request, td *models.TemplateData) {
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	stringMap := make(map[string]string)
 	stringMap["test"] = "hello world!"
 
-	render.RenderTemplate(w, "about.page.tmpl", td)
+	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{})
 }
