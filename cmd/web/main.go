@@ -37,5 +37,6 @@ func main() {
 	http.HandleFunc("/about", handlers.Repo.About)
 
 	fmt.Printf("Starting app : %s%s", "http://localhost", port)
+	fmt.Println()
 	_ = http.ListenAndServe(port, nil)
 }
