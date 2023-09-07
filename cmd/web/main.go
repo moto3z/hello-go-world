@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/alexedwards/scs/v2"
 	"hello-world/pkg/config"
 	"hello-world/pkg/handlers"
 	"hello-world/pkg/render"
@@ -13,8 +14,10 @@ const portNumber = ":8080"
 
 // main entry point of this app
 func main() {
-
 	var app config.AppConfig
+
+	session := scs.New()
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		println(err)
