@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const port = ":8080"
+const portNumber = ":8080"
 
 // main entry point of this app
 func main() {
@@ -33,10 +33,13 @@ func main() {
 
 	//2구간 ======================
 
-	http.HandleFunc("/", handlers.Repo.Home)
-	http.HandleFunc("/about", handlers.Repo.About)
-
-	fmt.Printf("Starting app : %s%s", "http://localhost", port)
+	fmt.Printf("Starting app : %s%s", "http://localhost", portNumber)
 	fmt.Println()
-	_ = http.ListenAndServe(port, nil)
+
+	serve := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+	err = serve.ListenAndServe()
+	log.Fatal(err)
 }
