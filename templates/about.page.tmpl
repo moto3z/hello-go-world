@@ -11,6 +11,14 @@
             <p> This came from the Template: {{index .StringMap "test"}}</p>
             <h3> <a href="./">Go To HOME Page</a> </h3>
 
+            <p>
+                {{if ne(index.StringMap "remote_ip") ""}}
+                Your ip = {{index .StringMap "remote_ip"}}
+                {{else}}
+                i don have yet IP
+                {{end}}
+            </p>
+
         </div>
     </div>
 </div>
