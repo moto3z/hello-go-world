@@ -45,6 +45,7 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 	//ip세션
 	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+	//m.App.Session.
 	stringMap["remote_ip"] = remoteIP
 
 	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
