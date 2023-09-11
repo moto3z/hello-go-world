@@ -2,19 +2,35 @@ package main
 
 import (
 	"fmt"
+	"github.com/alexedwards/scs/v2"
 	"hello-world/pkg/config"
 	"hello-world/pkg/handlers"
 	"hello-world/pkg/render"
 	"log"
 	"net/http"
+	"time"
 )
 
-const port = ":8080"
+const portNumber = ":8080"
+
+var app config.AppConfig
+var session *scs.SessionManager
 
 // main entry point of this app
 func main() {
 
-	var app config.AppConfig
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
+	app.Session = session
+
+	/*
+
+
+	 */
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		println(err)
@@ -33,10 +49,13 @@ func main() {
 
 	//2구간 ======================
 
-	http.HandleFunc("/", handlers.Repo.Home)
-	http.HandleFunc("/about", handlers.Repo.About)
-
-	fmt.Printf("Starting app : %s%s", "http://localhost", port)
+	fmt.Printf("Starting app : %s%s", "http://localhost", portNumber)
 	fmt.Println()
-	_ = http.ListenAndServe(port, nil)
+
+	serve := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+	err = serve.ListenAndServe()
+	log.Fatal(err)
 }
